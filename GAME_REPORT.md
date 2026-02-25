@@ -29,6 +29,8 @@
 ### Recent Fixes and Notes
 - Fixed malformed tile maps that caused white screen and map load errors by correcting row lengths and header dimensions in both map files.
 - Confirmed game launches after map fixes; no map load exceptions during startup.
+- Restored infinite Map 1 by enabling procedural pipe generation during gameplay and pre-generating ahead of the player.
+- Removed falling penguins from Map 1 so only Map 2 spawns penguin enemies.
 - Remaining missing specification items: novel sound filter and true parallax scrolling (clouds currently draw in screen space with no parallax effect).
 
 ---
