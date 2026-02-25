@@ -42,4 +42,15 @@ A link to the initial source code for the 2D assignment is available at the top 
 
 You must not use a different code library or game engine to build your game or use any other library code that you did not write yourself. Any attempt to do this will result in a mark of 0 for your assignment and the module as a whole. You can add further functionality to the supplied classes, extend them or override methods but you should not need to replace or substantially rewrite any of the supplied classes.
 
+In addition to the game, you should submit a report of up to 3 pages that should critically evaluate your implementation of the game and point out where you think it was successful and where it needs improvement. You should also use this as an opportunity to highlight any features of your game that may not be readily obvious but that you think worked well. At the end of the report, please note how your game could be extended based on the code that you have already written. 
+
+Submission Process
+
+Your assignment should be submitted in two parts:
+
+Assignment Code
+Please compress the complete IDE project folder sufficient to compile and run your game into a ZIP file and upload this as a single file onto the Canvas assignment submission page.
+Report
+Please submit this as a second file on the Canvas submission page. Feedback for the complete assignment including the code submission will be provided in response to the report submission on Canvas.
+
 

@@ -277,28 +277,26 @@ public class Game extends GameCore implements MouseListener
     	int mapH = tmap.getMapHeight();
     	int playerCol = (int)(player.getX() / tw);
     	
-    	// Look for pipe columns (not gaps) ahead of the player
+		// Look for pipe columns ahead of the player
     	ArrayList<Integer> pipeColumns = new ArrayList<Integer>();
     	for (int col = playerCol + 15; col < playerCol + 25; col++)
     	{
     		if (col >= tmap.getMapWidth()) break;
     		
-    		// Check if this column has a pipe (not a gap) in the middle rows
-    		// A pipe column will have 'p' or 't'/'b' tiles, not '.' gaps
-    		boolean hasGap = false;
-    		for (int row = 3; row < mapH - 3; row++)
-    		{
-    			char tile = tmap.getTileChar(col, row);
-    			if (tile == '.')
-    			{
-    				hasGap = true;
-    				break;
-    			}
-    		}
-    		
-    		// Only add columns that are NOT gaps (have solid pipes)
-    		if (!hasGap)
-    			pipeColumns.add(col);
+			// Check if this column contains any pipe tiles
+			boolean hasPipe = false;
+			for (int row = 0; row < mapH; row++)
+			{
+				char tile = tmap.getTileChar(col, row);
+				if (tile != '.')
+				{
+					hasPipe = true;
+					break;
+				}
+			}
+		
+			if (hasPipe)
+				pipeColumns.add(col);
     	}
     	
     	// If we found pipe columns, spawn on one of them
@@ -611,10 +609,12 @@ public class Game extends GameCore implements MouseListener
     	if (currentLevel == 1) {
     		tmap.loadMap(basePath + "maps", "map.txt");
     		generatedUpToColumn = tmap.getMapWidth() - 1;
-    		nextPipeColumn = generatedUpToColumn + 5;
+			nextPipeColumn = generatedUpToColumn + PIPE_SPACING;
     		lastGapTop = -1;
     		// Spawn walkers for infinite map
     		spawnWalkersBetweenPillars();
+			// Pre-generate pipes beyond the initial map so the run feels continuous
+			generatePipesAhead();
     	} else {
     		tmap.loadMap(basePath + "maps", "map2.txt");
     		generatedUpToColumn = -1; // Disable procedural generation for map2
@@ -1024,17 +1024,14 @@ public class Game extends GameCore implements MouseListener
        		}
        	}
        	
-       	// Spawn falling penguins periodically
-       	fallerTimer += elapsed;
-       	long currentInterval = (currentLevel == 1) ? fallerInterval : fallerIntervalMap2;
-       	if (fallerTimer >= currentInterval) {
-       		fallerTimer = 0;
-       		if (currentLevel == 1) {
-       			spawnFallingPenguin();
-       		} else {
-       			spawnFallingPenguinMap2();
-       		}
-       	}
+		// Spawn falling penguins periodically (map2 only)
+		if (currentLevel == 2) {
+			fallerTimer += elapsed;
+			if (fallerTimer >= fallerIntervalMap2) {
+				fallerTimer = 0;
+				spawnFallingPenguinMap2();
+			}
+		}
        	
        	// Update falling penguins
        	for (int i = fallers.size() - 1; i >= 0; i--) {
@@ -1137,6 +1134,11 @@ public class Game extends GameCore implements MouseListener
     	
     	// Now update the sprites animation and position
     	player.update(elapsed);
+	
+		if (currentLevel == 1) {
+			generatePipesAhead();
+			cleanUpBehindPlayer();
+		}
     	
 	// Check if player completed map2
 	if (currentLevel == 2 && player.getX() >= tmap.getPixelWidth() - 100) {
