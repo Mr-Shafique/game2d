@@ -4,53 +4,24 @@ import java.awt.Image;
 import java.awt.*;
 import java.awt.geom.*;
 
-/**
- * This class provides the functionality for a moving animated image or Sprite.
- * 
- * @author David Cairns
- *
- */
 public class Sprite {
 
-	// The current Animation to use for this sprite
-    private Animation anim;		
-
-    // Position (pixels)
+	private Animation anim;
     private float x;
     private float y;
-
-    // Velocity (pixels per millisecond)
     private float dx;
     private float dy;
-
-    // Dimensions of the sprite
     private float height;
     private float width;
     private float radius;
-
-    // The scale to draw the sprite at where 1 equals normal size
     private double xscale;
     private double yscale;
-    
-    // The rotation to apply to the sprite image
     private double rotation;
-
-    // If render is 'true', the sprite will be drawn when requested
     private boolean render;
-    
-    // The draw offset associated with this sprite. Used to draw it
-    // relative to specific on screen position (usually the player)
     private int xoff=0;
     private int yoff=0;
 
-    /**
-     *  Creates a new Sprite object with the specified Animation.
-     *  
-     * @param a The animation to use for the sprite.
-     * 
-     */
-    public Sprite(Animation anim) 
-    {
+    public Sprite(Animation anim) {
         this.anim = anim;
         render = true;
         xscale = 1.0f;
