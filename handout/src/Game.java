@@ -35,7 +35,7 @@ public class Game extends GameCore implements MouseListener
     boolean inMenu = true;
     int currentLevel = 1;
 
-    Animation landing, walk;
+    Animation landing, walk, penguin;
     Image level2Background;
     
     Sprite player = null;
@@ -104,6 +104,9 @@ public class Game extends GameCore implements MouseListener
 
         walk = new Animation();
         walk.loadAnimationSeries(basePath + "images/walk.png", 3, 4, 100, 6, 5);
+        
+        penguin = new Animation();
+        penguin.loadAnimationFromSheet(basePath + "images/penguin.png", 4, 1, 1000);
 
         player = new Sprite(landing);
         
@@ -176,11 +179,16 @@ public class Game extends GameCore implements MouseListener
     			if (gapWidth >= 3) {
     				// Walker walks on the ground (bottom of the map)
     				
-    				// Use walk.png (green creature) for walkers between pillars
-    				int walkerSpeed = 150;
-    				Animation walkerAnim = new Animation();
-    				walkerAnim.loadAnimationSeries(basePath + "images/walk.png", 3, 4, walkerSpeed, 6, 5);
-    				Sprite walker = new Sprite(walkerAnim);
+    				// Use penguin.png for level 2, walk.png for level 1
+    				Sprite walker;
+    				if (currentLevel == 2) {
+    					walker = new Sprite(penguin);
+    				} else {
+    					int walkerSpeed = 150;
+    					Animation walkerAnim = new Animation();
+    					walkerAnim.loadAnimationSeries(basePath + "images/walk.png", 3, 4, walkerSpeed, 6, 5);
+    					walker = new Sprite(walkerAnim);
+    				}
     				
     				// Store the left and right pixel bounds for the walker's patrol area
     				float leftBound = (gapStart + 1) * tw;
@@ -188,8 +196,8 @@ public class Game extends GameCore implements MouseListener
     				float px = (gapStart + gapWidth / 2.0f) * tw;
     				float py = mapH * th - walker.getHeight(); // Position so walker stands on bottom border
     				walker.setPosition(px, py);
-    				float walkerVelocity = 0.01f;
-    				walker.setVelocityX(walkerVelocity); // Slow left-right movement
+    				float walkerVelocity = (currentLevel == 2) ? 0.025f : 0.01f;
+    				walker.setVelocityX(walkerVelocity); // Movement speed
     				walker.show();
     				walkers.add(walker);
     				walkerLeftBounds.add(leftBound);
@@ -328,10 +336,16 @@ public class Game extends GameCore implements MouseListener
     	int gapCols = rightPipeCol - leftPipeCol - 1;
     	if (gapCols < 3) return;
     	
-    	int walkerSpeed = 150;
-    	Animation walkerAnim = new Animation();
-    	walkerAnim.loadAnimationSeries(basePath + "images/walk.png", 3, 4, walkerSpeed, 6, 5);
-    	Sprite walker = new Sprite(walkerAnim);
+    	// Use penguin.png for level 2, walk.png for level 1
+    	Sprite walker;
+    	if (currentLevel == 2) {
+    		walker = new Sprite(penguin);
+    	} else {
+    		int walkerSpeed = 150;
+    		Animation walkerAnim = new Animation();
+    		walkerAnim.loadAnimationSeries(basePath + "images/walk.png", 3, 4, walkerSpeed, 6, 5);
+    		walker = new Sprite(walkerAnim);
+    	}
     	
     	float leftBound = (leftPipeCol + 1) * tw;
     	float rightBound = rightPipeCol * tw;
@@ -339,7 +353,7 @@ public class Game extends GameCore implements MouseListener
     	float py = mapH * th - walker.getHeight(); // Position so walker stands on bottom border
     	
     	walker.setPosition(px, py);
-    	float walkerVelocity = 0.01f;
+    	float walkerVelocity = (currentLevel == 2) ? 0.025f : 0.01f;
     	walker.setVelocityX(walkerVelocity);
     	walker.show();
     	walkers.add(walker);
