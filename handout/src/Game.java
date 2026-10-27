@@ -92,8 +92,11 @@ public class Game extends GameCore implements MouseListener
         virtualHeight = screenHeight;
         
         // Set window size to match virtual resolution
+        setTitle("Flappy Bird Game");
+        setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
         setSize(screenWidth, screenHeight);
         setResizable(false);
+        setLocationRelativeTo(null);
         setVisible(true);
         
         // Register mouse listener for mouse click events
